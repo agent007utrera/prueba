@@ -68,22 +68,18 @@
         const chatContainer = document.getElementById('chat-container');
         const messageInput = document.getElementById('message');
 
-        // Simple WebSocket server within this HTML
-        const clients = [];
-        const server = new BroadcastChannel('chat');
-
-        server.onmessage = (event) => {
+        function addMessageToChat(content) {
             const message = document.createElement('div');
             message.classList.add('message');
-            message.textContent = event.data;
+            message.textContent = content;
             chatContainer.appendChild(message);
             chatContainer.scrollTop = chatContainer.scrollHeight;
-        };
+        }
 
         function sendMessage() {
             const text = messageInput.value;
             if (text) {
-                server.postMessage(text);
+                addMessageToChat(`You: ${text}`);
                 messageInput.value = '';
             }
         }
