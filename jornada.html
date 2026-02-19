@@ -349,7 +349,7 @@
                 break;
             case 3: msg = `🔴 EXPULSADO EL <strong>${pos}</strong> DEL <strong>${equipo}</strong>. ESTARÁ <strong>1 PARTIDO</strong> SIN JUGAR.`; break;
             case 4:
-                msg = `🥅 PENALTI A FAVOR DEL <strong>${equipo}</strong>. CON 4, 5 O 6 ES GOL.`;
+                msg = `🥅 PENALTI A FAVOR DEL <strong>${equipo}</strong>. CON 3, 4, 5 ó 6 ES GOL.`;
                 document.getElementById('penaltyZone').style.display = 'block';
                 document.getElementById('btnNextJornada').style.visibility = 'hidden';
                 break;
@@ -369,7 +369,7 @@
     function shootPenalty() {
         const roll = Math.floor(Math.random() * 6) + 1;
         const resDiv = document.getElementById('penaltyResult');
-        const isGoal = roll >= 4;
+        const isGoal = roll >= 3;
         resDiv.innerText = `DADO: ${roll} -> ${isGoal ? "¡GOOOL!" : "¡FALLO!"}`;
         resDiv.style.color = isGoal ? "var(--fc-green)" : "var(--fc-pink)";
         document.getElementById('btnShoot').style.display = 'none';
