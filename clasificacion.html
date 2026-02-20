@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>PC FÚTBOL 2026 - Liga 8 Equipos</title>
+    <title>PC FÚTBOL 2026 - Liga 8 Equipos (Cloud Sync Ready)</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --pc-blue-dark: #001a33;
@@ -10,7 +11,7 @@
             --pc-blue-light: #5a8cb8;
             --pc-gold: #ffd700;
             --pc-text: #e6f0fa;
-            --pc-cyan: #00ffff;
+            --pc-success: #28a745;
         }
 
         body {
@@ -53,112 +54,121 @@
             align-items: center;
         }
 
-        .btn-group { display: flex; gap: 5px; flex-wrap: wrap; }
+        /* --- BOTONES MODERNOS --- */
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
 
         .btn-action {
             color: white;
             border: 1px solid white;
-            font-size: 9px;
-            padding: 6px 10px;
+            font-size: 10px;
+            padding: 8px 12px;
             cursor: pointer;
             text-transform: uppercase;
             font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            border-radius: 4px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-        .btn-reset { background: #a00; }
-        .btn-save-file { background: #080; }
-        .btn-cloud { background: #0066ff; }
 
-        /* Botón SAVEGAME Especial */
-        .btn-link.btn-web {
-            background: linear-gradient(180deg, #004444 0%, #008b8b 100%);
-            color: var(--pc-gold);
-            border: 2px solid var(--pc-gold);
-            font-size: 11px;
-            margin-top: 10px;
-            width: 100%;
-            box-sizing: border-box;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
-            transition: 0.3s;
-        }
-        
-        .btn-link.btn-web:hover {
-            background: var(--pc-gold);
-            color: #000;
-            box-shadow: 0 0 20px var(--pc-gold);
+        .btn-auto-save { background: #004d40; border-color: #00bfa5; }
+        .btn-auto-load { background: #311b92; border-color: #7c4dff; }
+        .btn-reset { background: #b71c1c; border-color: #ff5252; }
+
+        .status-badge {
+            font-size: 9px;
+            padding: 2px 6px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            color: var(--pc-success);
+            margin-left: 10px;
         }
 
         .jornada-selector {
             margin-bottom: 15px;
             background: rgba(0,0,0,0.3);
-            padding: 10px;
+            padding: 12px;
             border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         select {
             background: var(--pc-blue-dark);
             color: white;
             border: 1px solid var(--pc-blue-light);
-            padding: 5px;
+            padding: 6px;
+            font-weight: bold;
         }
 
+        /* --- FILAS DE PARTIDOS --- */
         .match-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px;
-            margin-bottom: 5px;
+            padding: 12px;
+            margin-bottom: 6px;
             background: rgba(255,255,255,0.05);
             border-radius: 4px;
+            border-left: 3px solid transparent;
         }
+        .match-row:hover { background: rgba(255,255,255,0.1); }
+        .match-row.has-score { border-left-color: var(--pc-gold); }
 
         .score-input {
-            width: 40px;
-            height: 30px;
-            font-size: 18px;
+            width: 45px;
+            height: 35px;
+            font-size: 20px;
             text-align: center;
             font-weight: bold;
             border: 2px solid var(--pc-blue-light);
             border-radius: 4px;
+            background: #fff;
+            color: #000;
         }
 
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        /* --- CLASIFICACIÓN --- */
+        table { width: 100%; border-collapse: collapse; }
         th { background: var(--pc-blue-dark); color: var(--pc-gold); padding: 12px 5px; border-bottom: 2px solid var(--pc-blue-light); }
         td { padding: 10px 5px; text-align: center; border-bottom: 1px solid rgba(90, 140, 184, 0.2); }
-        .pos-1 { background: rgba(255, 215, 0, 0.15); color: var(--pc-gold); }
+        .pos-1 { background: rgba(255, 215, 0, 0.1); color: var(--pc-gold); font-weight: bold; }
+        .td-pts { font-size: 16px; color: var(--pc-gold); font-weight: bold; }
+
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="fixtures-panel">
-        <h2>GESTIÓN DE PARTIDOS</h2>
+        <h2>CENTRAL DE DATOS <span id="saveStatus" class="status-badge">Sincronizado</span></h2>
         
         <div class="btn-group">
-            <button class="btn-action btn-cloud" onclick="exportarCodigo()">Generar Código</button>
-            <button class="btn-action btn-cloud" onclick="importarCodigo()">Cargar Código</button>
-            <button class="btn-action btn-save-file" onclick="exportarHTML()">Exportar HTML</button>
+            <button class="btn-action btn-auto-save" onclick="exportarCodigo()">
+                <i class="fas fa-copy"></i> CÓDIGO NUBE
+            </button>
+            <button class="btn-action btn-auto-load" onclick="importarCodigo()">
+                <i class="fas fa-upload"></i> CARGAR NUBE
+            </button>
+            <a href="https://docs.google.com/document/d/1LuO4fxi0QphqnF06ka_F9b65K0jcuyK5/edit" 
+               target="_blank" class="btn-action" style="background: #2b5797; text-decoration:none;">
+               <i class="fas fa-file-alt"></i> ABRIR DOCS
+            </a>
         </div>
 
-        <a href="https://docs.google.com/document/d/1LuO4fxi0QphqnF06ka_F9b65K0jcuyK5/edit?usp=drive_link&ouid=114449747404473684266&rtpof=true&sd=true" 
-           target="_blank" class="btn-action btn-link btn-web">
-           <i class="fas fa-cloud"></i> IR A MI NUBE (SAVEGAME)
-        </a>
-
-        <hr style="border: 0; border-top: 1px solid var(--pc-blue-light); margin: 20px 0;">
-
         <div class="jornada-selector">
-            Jornada: <select id="jornadaSelect" onchange="renderMatches()"></select>
-            <button class="btn-action btn-reset" style="float:right" onclick="resetLiga()">Reset</button>
+            <div>
+                Jornada: <select id="jornadaSelect" onchange="renderMatches()"></select>
+            </div>
+            <button class="btn-action btn-reset" onclick="resetLiga()">REINICIAR LIGA</button>
         </div>
         
         <div id="matchesContainer"></div>
     </div>
 
     <div class="table-panel">
-        <h2>CLASIFICACIÓN LIGA 2026</h2>
+        <h2>CLASIFICACIÓN GENERAL</h2>
         <table>
             <thead>
                 <tr>
@@ -194,45 +204,48 @@
         teams: {}
     };
 
+    // --- LÓGICA DE PERSISTENCIA ---
+
+    function updateStatus(text, color) {
+        const el = document.getElementById('saveStatus');
+        el.innerText = text;
+        el.style.color = color || 'var(--pc-success)';
+    }
+
+    function saveToLocal() {
+        localStorage.setItem('pcfutbol_2026_autosave', JSON.stringify(leagueData.matches));
+        updateStatus("Guardado Local OK");
+    }
+
     function exportarCodigo() {
         const codigo = btoa(JSON.stringify(leagueData.matches));
-        const tempInput = document.createElement("textarea");
-        document.body.appendChild(tempInput);
-        tempInput.value = codigo;
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
-        alert("¡Código copiado al portapapeles! Ahora pégalo en tu Google Doc.");
+        navigator.clipboard.writeText(codigo).then(() => {
+            alert("¡Código copiado! Pégalo en tu Google Doc para 'Guardado Online'.");
+            updateStatus("Código Copiado");
+        });
     }
 
     function importarCodigo() {
-        const codigo = prompt("Pega aquí el código que tienes guardado en tu Google Doc:");
+        const codigo = prompt("Pega el código de tu Google Doc:");
         if (codigo) {
             try {
                 leagueData.matches = JSON.parse(atob(codigo));
-                saveLocal(); calculateTable(); renderMatches();
-                alert("Partida cargada correctamente.");
-            } catch (e) { alert("Código no válido."); }
+                saveToLocal(); calculateTable(); renderMatches();
+                alert("Partida cargada.");
+            } catch (e) { alert("Error al cargar."); }
         }
     }
 
-    function saveLocal() { localStorage.setItem('pc_save_v2', JSON.stringify(leagueData.matches)); }
-
-    function exportarHTML() {
-        const scriptActual = document.getElementById('dataScript').innerHTML;
-        const dataInyectada = scriptActual.replace(/let leagueData = \{[\s\S]*?\};/, `let leagueData = ${JSON.stringify(leagueData, null, 2)};`);
-        const htmlCompleto = `<!DOCTYPE html>\n${document.documentElement.outerHTML.replace(scriptActual, dataInyectada)}`;
-        const blob = new Blob([htmlCompleto], { type: 'text/html' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'PC_Futbol_Partida.html';
-        a.click();
-    }
+    // --- CÁLCULOS DE LIGA ---
 
     function updateScore(j, m, s, v) {
         const n = v === "" ? null : parseInt(v);
         if (s === 'H') leagueData.matches[j][m].gH = n; else leagueData.matches[j][m].gA = n;
-        saveLocal(); calculateTable();
+        
+        updateStatus("Guardando...", "#ff9800");
+        saveToLocal();
+        calculateTable();
+        setTimeout(() => updateStatus("Sincronizado"), 1000);
     }
 
     function calculateTable() {
@@ -254,13 +267,14 @@
         const container = document.getElementById('matchesContainer');
         container.innerHTML = '';
         leagueData.matches[jIdx].forEach((m, mIdx) => {
+            const hasVal = m.gH !== null && m.gA !== null;
             container.innerHTML += `
-                <div class="match-row">
-                    <span style="width:80px; text-align:right">${m.home}</span>
+                <div class="match-row ${hasVal ? 'has-score' : ''}">
+                    <span style="width:100px; text-align:right; font-weight:bold;">${m.home}</span>
                     <input type="number" class="score-input" value="${m.gH !== null ? m.gH : ''}" onchange="updateScore(${jIdx},${mIdx},'H',this.value)">
-                    <span>vs</span>
+                    <span style="color:var(--pc-gold); font-weight:bold;">VS</span>
                     <input type="number" class="score-input" value="${m.gA !== null ? m.gA : ''}" onchange="updateScore(${jIdx},${mIdx},'A',this.value)">
-                    <span style="width:80px; text-align:left">${m.away}</span>
+                    <span style="width:100px; text-align:left; font-weight:bold;">${m.away}</span>
                 </div>`;
         });
     }
@@ -275,21 +289,28 @@
         sorted.forEach((id, i) => {
             const t = leagueData.teams[id];
             tbody.innerHTML += `<tr class="${i===0?'pos-1':''}">
-                <td>${i+1}</td><td style="text-align:left; padding-left:10px">${id}</td>
+                <td>${i+1}</td><td style="text-align:left; padding-left:15px">${id}</td>
                 <td>${t.pj}</td><td>${t.pg}</td><td>${t.pe}</td><td>${t.pp}</td>
-                <td>${t.gf}</td><td>${t.gc}</td><td>${t.gf-t.gc}</td><td style="color:var(--pc-gold); font-weight:bold">${t.pts}</td>
+                <td>${t.gf}</td><td>${t.gc}</td><td>${t.gf-t.gc}</td><td class="td-pts">${t.pts}</td>
             </tr>`;
         });
     }
 
-    function resetLiga() { if (confirm("¿Borrar todo?")) { localStorage.clear(); location.reload(); } }
+    function resetLiga() { if (confirm("¿Seguro que quieres borrar toda la temporada?")) { localStorage.clear(); location.reload(); } }
 
     window.onload = () => {
         const sel = document.getElementById('jornadaSelect');
         for(let i=1; i<=14; i++) sel.innerHTML += `<option value="${i}">Jornada ${i}</option>`;
-        const saved = localStorage.getItem('pc_save_v2');
-        if(saved) leagueData.matches = JSON.parse(saved);
-        calculateTable(); renderMatches();
+        
+        // Carga automática desde LocalStorage al abrir
+        const saved = localStorage.getItem('pcfutbol_2026_autosave');
+        if(saved) {
+            leagueData.matches = JSON.parse(saved);
+            updateStatus("Partida Cargada");
+        }
+
+        calculateTable(); 
+        renderMatches();
     };
 </script>
 </body>
