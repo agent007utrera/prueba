@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>PC FÚTBOL 2026 - Liga 8 Equipos (Cloud Sync Ready)</title>
+    <title>PC FÚTBOL 2026 - Master Cloud Edition</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -11,99 +11,94 @@
             --pc-blue-light: #5a8cb8;
             --pc-gold: #ffd700;
             --pc-text: #e6f0fa;
-            --pc-success: #28a745;
+            --pc-cyan: #00ffff;
         }
 
         body {
             background-color: #000;
             color: var(--pc-text);
             font-family: 'Verdana', sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            padding: 20px;
+            margin: 0; padding: 20px;
+            display: flex; justify-content: center;
         }
 
-        .container {
-            display: flex;
-            gap: 20px;
-            width: 1250px;
-            max-width: 95vw;
-        }
+        .container { display: flex; gap: 20px; width: 1280px; max-width: 98vw; }
 
         .fixtures-panel, .table-panel {
             background: linear-gradient(180deg, var(--pc-blue-mid), var(--pc-blue-dark));
             border: 2px solid var(--pc-blue-light);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border-radius: 8px; padding: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.7);
         }
 
-        .fixtures-panel { flex: 1; }
-        .table-panel { flex: 1.6; }
+        .fixtures-panel { flex: 1; min-width: 400px; }
+        .table-panel { flex: 1.5; }
 
-        h2 {
-            color: var(--pc-gold);
-            text-transform: uppercase;
+        h2 { 
+            color: var(--pc-gold); 
+            text-transform: uppercase; 
             font-size: 18px;
-            border-bottom: 1px solid var(--pc-blue-light);
-            padding-bottom: 10px;
-            margin-top: 0;
-            display: flex;
+            border-bottom: 2px solid var(--pc-blue-light); 
+            padding-bottom: 10px; 
+            margin-top: 0; 
+            display: flex; 
             justify-content: space-between;
             align-items: center;
         }
 
-        /* --- BOTONES MODERNOS --- */
-        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+        /* --- BOTONERA --- */
+        .cloud-section {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--pc-blue-light);
+            margin-bottom: 20px;
+        }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
 
         .btn-action {
             color: white;
             border: 1px solid white;
             font-size: 10px;
-            padding: 8px 12px;
+            padding: 10px;
             cursor: pointer;
             text-transform: uppercase;
             font-weight: bold;
             border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            text-decoration: none;
         }
 
-        .btn-auto-save { background: #004d40; border-color: #00bfa5; }
-        .btn-auto-load { background: #311b92; border-color: #7c4dff; }
-        .btn-reset { background: #b71c1c; border-color: #ff5252; }
+        .btn-save-cloud { background: #0056b3; border-color: var(--pc-cyan); }
+        .btn-load-cloud { background: #4527a0; border-color: #7c4dff; }
+        .btn-copy-code { background: #2e7d32; border-color: #69f0ae; }
+        .btn-import-code { background: #ef6c00; border-color: #ffd180; }
+        .btn-docs { background: #2b5797; grid-column: span 2; margin-top: 5px; color: var(--pc-gold); border-color: var(--pc-gold); }
 
-        .status-badge {
-            font-size: 9px;
-            padding: 2px 6px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 10px;
-            color: var(--pc-success);
-            margin-left: 10px;
-        }
+        .btn-action:hover { opacity: 0.8; transform: scale(1.02); }
 
-        .jornada-selector {
-            margin-bottom: 15px;
-            background: rgba(0,0,0,0.3);
-            padding: 12px;
-            border-radius: 4px;
+        /* --- SELECTOR Y FILAS --- */
+        .jornada-nav {
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
         }
 
-        select {
-            background: var(--pc-blue-dark);
-            color: white;
-            border: 1px solid var(--pc-blue-light);
-            padding: 6px;
-            font-weight: bold;
-        }
+        select { background: #000; color: #fff; border: 1px solid var(--pc-blue-light); padding: 5px; font-weight: bold; }
 
-        /* --- FILAS DE PARTIDOS --- */
         .match-row {
             display: flex;
             align-items: center;
@@ -112,68 +107,68 @@
             margin-bottom: 6px;
             background: rgba(255,255,255,0.05);
             border-radius: 4px;
-            border-left: 3px solid transparent;
+            border-left: 4px solid transparent;
         }
-        .match-row:hover { background: rgba(255,255,255,0.1); }
-        .match-row.has-score { border-left-color: var(--pc-gold); }
+        .match-row.completed { border-left-color: var(--pc-gold); background: rgba(255,215,0,0.05); }
 
         .score-input {
-            width: 45px;
-            height: 35px;
-            font-size: 20px;
-            text-align: center;
-            font-weight: bold;
-            border: 2px solid var(--pc-blue-light);
-            border-radius: 4px;
-            background: #fff;
-            color: #000;
+            width: 45px; height: 35px; text-align: center; font-size: 20px; font-weight: bold;
+            border: 2px solid var(--pc-blue-light); border-radius: 4px;
         }
 
-        /* --- CLASIFICACIÓN --- */
+        /* --- TABLA --- */
         table { width: 100%; border-collapse: collapse; }
-        th { background: var(--pc-blue-dark); color: var(--pc-gold); padding: 12px 5px; border-bottom: 2px solid var(--pc-blue-light); }
-        td { padding: 10px 5px; text-align: center; border-bottom: 1px solid rgba(90, 140, 184, 0.2); }
+        th { background: var(--pc-blue-dark); color: var(--pc-gold); padding: 12px 5px; font-size: 12px; }
+        td { padding: 10px 5px; text-align: center; border-bottom: 1px solid rgba(90, 140, 184, 0.2); font-size: 14px; }
         .pos-1 { background: rgba(255, 215, 0, 0.1); color: var(--pc-gold); font-weight: bold; }
-        .td-pts { font-size: 16px; color: var(--pc-gold); font-weight: bold; }
+        .pts-col { color: var(--pc-gold); font-weight: bold; font-size: 16px; }
 
+        #sync-label { font-size: 10px; text-transform: none; font-weight: normal; color: var(--pc-cyan); }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="fixtures-panel">
-        <h2>CENTRAL DE DATOS <span id="saveStatus" class="status-badge">Sincronizado</span></h2>
+        <h2>CENTRAL DE DATOS <span id="sync-label">Listo</span></h2>
         
-        <div class="btn-group">
-            <button class="btn-action btn-auto-save" onclick="exportarCodigo()">
-                <i class="fas fa-copy"></i> CÓDIGO NUBE
-            </button>
-            <button class="btn-action btn-auto-load" onclick="importarCodigo()">
-                <i class="fas fa-upload"></i> CARGAR NUBE
-            </button>
-            <a href="https://docs.google.com/document/d/1LuO4fxi0QphqnF06ka_F9b65K0jcuyK5/edit" 
-               target="_blank" class="btn-action" style="background: #2b5797; text-decoration:none;">
-               <i class="fas fa-file-alt"></i> ABRIR DOCS
-            </a>
+        <div class="cloud-section">
+            <div class="btn-grid">
+                <button class="btn-action btn-save-cloud" onclick="saveToCloud()">
+                    <i class="fas fa-cloud-upload-alt"></i> GUARDAR NUBE
+                </button>
+                <button class="btn-action btn-load-cloud" onclick="loadFromCloud()">
+                    <i class="fas fa-cloud-download-alt"></i> CARGAR NUBE
+                </button>
+                
+                <button class="btn-action btn-copy-code" onclick="exportarCodigo()">
+                    <i class="fas fa-copy"></i> COPIAR CÓDIGO
+                </button>
+                <button class="btn-action btn-import-code" onclick="importarCodigo()">
+                    <i class="fas fa-paste"></i> PEGAR CÓDIGO
+                </button>
+
+                <a href="https://docs.google.com/document/d/1LuO4fxi0QphqnF06ka_F9b65K0jcuyK5/edit" 
+                   target="_blank" class="btn-action btn-docs">
+                    <i class="fas fa-external-link-alt"></i> ABRIR HISTORIAL (GOOGLE DOCS)
+                </a>
+            </div>
         </div>
 
-        <div class="jornada-selector">
-            <div>
-                Jornada: <select id="jornadaSelect" onchange="renderMatches()"></select>
-            </div>
-            <button class="btn-action btn-reset" onclick="resetLiga()">REINICIAR LIGA</button>
+        <div class="jornada-nav">
+            <span>Jornada: <select id="jornadaSelect" onchange="renderMatches()"></select></span>
+            <button onclick="resetLiga()" style="background:none; border:none; color:#ff4444; cursor:pointer; font-size:10px;">BORRAR TODO</button>
         </div>
         
         <div id="matchesContainer"></div>
     </div>
 
     <div class="table-panel">
-        <h2>CLASIFICACIÓN GENERAL</h2>
+        <h2>CLASIFICACIÓN LIGA 2026</h2>
         <table>
             <thead>
                 <tr>
-                    <th>POS</th>
-                    <th style="text-align:left; padding-left:10px;">EQUIPO</th>
+                    <th>POS</th><th style="text-align:left; padding-left:10px;">EQUIPO</th>
                     <th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GF</th><th>GC</th><th>DG</th><th>PTS</th>
                 </tr>
             </thead>
@@ -182,8 +177,18 @@
     </div>
 </div>
 
-<script id="dataScript">
+<script>
+    // ==========================================
+    // CONFIGURACIÓN: PEGA AQUÍ TUS DATOS DE JSONBIN
+    // ==========================================
+    const CLOUD_CONFIG = {
+        masterKey: '$2a$10$26PEKgZLn/Xrvj382g.aLuqVvown/bA8vqbabwSAPpPYLnPZx/oku', 
+        binId: '6998cf39ae596e708f3b1d90' 
+    };
+
     const equiposArr = ["E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8"];
+    
+    // Estructura de calendario basada en tus imágenes
     let leagueData = { 
         matches: [
             [["E4","E1"], ["E6","E7"], ["E5","E2"], ["E8","E3"]], 
@@ -204,48 +209,69 @@
         teams: {}
     };
 
-    // --- LÓGICA DE PERSISTENCIA ---
+    // --- FUNCIONES NUBE DIRECTA ---
 
-    function updateStatus(text, color) {
-        const el = document.getElementById('saveStatus');
-        el.innerText = text;
-        el.style.color = color || 'var(--pc-success)';
+    async function saveToCloud() {
+        const label = document.getElementById('sync-label');
+        label.innerText = "Guardando en la nube...";
+        try {
+            const res = await fetch(`https://api.jsonbin.io/v3/b/${CLOUD_CONFIG.binId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'X-Master-Key': CLOUD_CONFIG.masterKey },
+                body: JSON.stringify(leagueData.matches)
+            });
+            if(res.ok) { alert("¡Nube actualizada!"); label.innerText = "Sincronizado"; }
+        } catch (e) { alert("Error al conectar con el servidor"); label.innerText = "Error"; }
     }
 
-    function saveToLocal() {
-        localStorage.setItem('pcfutbol_2026_autosave', JSON.stringify(leagueData.matches));
-        updateStatus("Guardado Local OK");
+    async function loadFromCloud() {
+        const label = document.getElementById('sync-label');
+        label.innerText = "Cargando...";
+        try {
+            const res = await fetch(`https://api.jsonbin.io/v3/b/${CLOUD_CONFIG.binId}/latest`, {
+                headers: { 'X-Master-Key': CLOUD_CONFIG.masterKey }
+            });
+            const data = await res.json();
+            if(data.record) {
+                leagueData.matches = data.record;
+                calculateTable(); renderMatches();
+                label.innerText = "Datos recuperados";
+            }
+        } catch (e) { alert("Error al descargar datos"); }
     }
+
+    // --- FUNCIONES DE CÓDIGO (BACKUP MANUAL) ---
 
     function exportarCodigo() {
         const codigo = btoa(JSON.stringify(leagueData.matches));
         navigator.clipboard.writeText(codigo).then(() => {
-            alert("¡Código copiado! Pégalo en tu Google Doc para 'Guardado Online'.");
-            updateStatus("Código Copiado");
+            alert("Código de backup copiado al portapapeles. Puedes guardarlo en tu Google Doc.");
         });
     }
 
     function importarCodigo() {
-        const codigo = prompt("Pega el código de tu Google Doc:");
+        const codigo = prompt("Pega el código de backup aquí:");
         if (codigo) {
             try {
                 leagueData.matches = JSON.parse(atob(codigo));
-                saveToLocal(); calculateTable(); renderMatches();
-                alert("Partida cargada.");
-            } catch (e) { alert("Error al cargar."); }
+                saveLocal(); calculateTable(); renderMatches();
+                alert("Partida cargada desde código.");
+            } catch (e) { alert("Código inválido."); }
         }
     }
 
-    // --- CÁLCULOS DE LIGA ---
+    // --- MOTOR DE LIGA ---
+
+    function saveLocal() {
+        localStorage.setItem('pcfutbol_final_save', JSON.stringify(leagueData.matches));
+    }
 
     function updateScore(j, m, s, v) {
         const n = v === "" ? null : parseInt(v);
         if (s === 'H') leagueData.matches[j][m].gH = n; else leagueData.matches[j][m].gA = n;
-        
-        updateStatus("Guardando...", "#ff9800");
-        saveToLocal();
+        saveLocal();
         calculateTable();
-        setTimeout(() => updateStatus("Sincronizado"), 1000);
+        renderMatches();
     }
 
     function calculateTable() {
@@ -267,14 +293,14 @@
         const container = document.getElementById('matchesContainer');
         container.innerHTML = '';
         leagueData.matches[jIdx].forEach((m, mIdx) => {
-            const hasVal = m.gH !== null && m.gA !== null;
+            const isDone = m.gH !== null && m.gA !== null;
             container.innerHTML += `
-                <div class="match-row ${hasVal ? 'has-score' : ''}">
-                    <span style="width:100px; text-align:right; font-weight:bold;">${m.home}</span>
+                <div class="match-row ${isDone ? 'completed' : ''}">
+                    <span style="width:80px; text-align:right; font-weight:bold">${m.home}</span>
                     <input type="number" class="score-input" value="${m.gH !== null ? m.gH : ''}" onchange="updateScore(${jIdx},${mIdx},'H',this.value)">
-                    <span style="color:var(--pc-gold); font-weight:bold;">VS</span>
+                    <span style="color:var(--pc-gold); font-weight:bold">vs</span>
                     <input type="number" class="score-input" value="${m.gA !== null ? m.gA : ''}" onchange="updateScore(${jIdx},${mIdx},'A',this.value)">
-                    <span style="width:100px; text-align:left; font-weight:bold;">${m.away}</span>
+                    <span style="width:80px; text-align:left; font-weight:bold">${m.away}</span>
                 </div>`;
         });
     }
@@ -289,28 +315,21 @@
         sorted.forEach((id, i) => {
             const t = leagueData.teams[id];
             tbody.innerHTML += `<tr class="${i===0?'pos-1':''}">
-                <td>${i+1}</td><td style="text-align:left; padding-left:15px">${id}</td>
+                <td>${i+1}</td><td style="text-align:left; padding-left:10px">${id}</td>
                 <td>${t.pj}</td><td>${t.pg}</td><td>${t.pe}</td><td>${t.pp}</td>
-                <td>${t.gf}</td><td>${t.gc}</td><td>${t.gf-t.gc}</td><td class="td-pts">${t.pts}</td>
+                <td>${t.gf}</td><td>${t.gc}</td><td>${t.gf-t.gc}</td><td class="pts-col">${t.pts}</td>
             </tr>`;
         });
     }
 
-    function resetLiga() { if (confirm("¿Seguro que quieres borrar toda la temporada?")) { localStorage.clear(); location.reload(); } }
+    function resetLiga() { if (confirm("¿Reiniciar toda la temporada?")) { localStorage.clear(); location.reload(); } }
 
     window.onload = () => {
         const sel = document.getElementById('jornadaSelect');
         for(let i=1; i<=14; i++) sel.innerHTML += `<option value="${i}">Jornada ${i}</option>`;
-        
-        // Carga automática desde LocalStorage al abrir
-        const saved = localStorage.getItem('pcfutbol_2026_autosave');
-        if(saved) {
-            leagueData.matches = JSON.parse(saved);
-            updateStatus("Partida Cargada");
-        }
-
-        calculateTable(); 
-        renderMatches();
+        const saved = localStorage.getItem('pcfutbol_final_save');
+        if(saved) leagueData.matches = JSON.parse(saved);
+        calculateTable(); renderMatches();
     };
 </script>
 </body>
