@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUPERSOCCER 2026 - FINAL WHISTLE</title>
+    <title>SUPERSOCCER 2026 - CUSTOM LEAGUE</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;700;900&display=swap');
 
@@ -23,6 +23,18 @@
 
         .container { width: 100%; max-width: 1000px; padding: 20px; box-sizing: border-box; }
 
+        /* PANTALLA DE CONFIGURACIÓN */
+        #setupScreen {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: var(--dark-bg); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px; }
+        .setup-input { 
+            background: rgba(255,255,255,0.05); border: 1px solid var(--fc-blue); color: white;
+            padding: 10px; font-family: 'Barlow'; font-weight: 700; text-transform: uppercase; border-radius: 5px;
+        }
+
+        /* INTERFAZ DE JUEGO */
         .header-panel { text-align: center; margin-bottom: 10px; }
         .phase-badge { color: var(--fc-green); letter-spacing: 3px; font-weight: 900; border-bottom: 2px solid var(--fc-green); display: inline-block; padding-bottom: 5px; }
         
@@ -42,7 +54,7 @@
         .is-attacking { animation: blinkAtk 0.8s infinite; font-weight: 900; }
 
         .score { font-size: 1.8rem; font-family: 'Archivo Black'; color: var(--fc-green); margin: 0 5px; }
-        input { 
+        input[type="number"] { 
             background: black; color: white; border: 1px solid #444; padding: 8px; width: 50px; 
             text-align: center; font-size: 1.2rem; font-weight: 900; border-radius: 5px; 
         }
@@ -57,11 +69,7 @@
         .btn-action:hover:not(:disabled) { background: var(--fc-green); transform: scale(1.05); }
         .btn-action:disabled { opacity: 0.2; cursor: not-allowed; }
 
-        /* Botón de Evento especial */
-        #btnEventoFinal {
-            background: var(--fc-green); color: black; display: none; margin: 20px auto;
-            box-shadow: 0 0 20px rgba(204, 255, 0, 0.4);
-        }
+        #btnEventoFinal { background: var(--fc-green); color: black; display: none; margin: 20px auto; }
 
         .modal {
             display: none; position: fixed; top:0; left:0; width:100%; height:100%;
@@ -71,6 +79,21 @@
     </style>
 </head>
 <body>
+
+    <div id="setupScreen">
+        <h1 style="color: var(--fc-green); font-family: 'Archivo Black';">CONFIGURAR EQUIPOS</h1>
+        <div class="setup-grid">
+            <input type="text" class="setup-input" id="eq-0" value="REAL MADRID">
+            <input type="text" class="setup-input" id="eq-1" value="BARCELONA">
+            <input type="text" class="setup-input" id="eq-2" value="ATLETICO">
+            <input type="text" class="setup-input" id="eq-3" value="REAL BETIS">
+            <input type="text" class="setup-input" id="eq-4" value="SEVILLA">
+            <input type="text" class="setup-input" id="eq-5" value="VALENCIA">
+            <input type="text" class="setup-input" id="eq-6" value="ATHLETIC">
+            <input type="text" class="setup-input" id="eq-7" value="VILLARREAL">
+        </div>
+        <button class="btn-action" onclick="startGame()">EMPEZAR JORNADA</button>
+    </div>
 
     <div class="container">
         <div class="header-panel">
@@ -108,9 +131,8 @@
     </div>
 
 <script>
-    const equipos = ["Equipo A", "Equipo B", "Equipo C", "Equipo D", "Equipo E", "Equipo F", "Equipo G", "Equipo H"];
-    const teams = ["Real Betis", "Sevilla", "Real Madrid", "Barcelona", "Atlético", "Athletic", "Valencia", "Villarreal"];
-    const posiciones = ["Portero", "Defensa", "Medio", "Delantero"];
+    let equipos = [];
+    const posiciones = ["Portero", "Defensa", "Medio Izquierdo", "Medio Derecho", "Delantero"];
     const atributos = ["RITMO ⚡", "TIRO ⚽", "PASE 🎯", "REGATE 🪄", "DEFENSA 🛡️", "FÍSICO 💪"];
     
     let faseIdx = 0;
@@ -140,11 +162,19 @@
         { name: "DELANTERO VISITANTE vs PORTERO LOCAL", atk: "V", isGoalPhase: true }
     ];
 
+    function startGame() {
+        for(let i=0; i<8; i++) {
+            equipos.push(document.getElementById(`eq-${i}`).value);
+        }
+        document.getElementById('setupScreen').style.display = 'none';
+        renderMatches();
+    }
+
     function renderMatches() {
         const container = document.getElementById('matchesContainer');
         container.innerHTML = '';
         const f = sequence[faseIdx];
-        if (!f) return; // Fin de secuencia
+        if (!f) return;
 
         for(let i=0; i<4; i++) {
             const idL = i*2; const idV = i*2+1;
@@ -177,7 +207,6 @@
         const f = sequence[faseIdx];
         if (!f.isGoalPhase) dueloCampo();
         else dueloPortero();
-        
         document.getElementById('btnAccion').disabled = true;
         document.getElementById('btnSortear').disabled = false;
     }
@@ -195,6 +224,7 @@
                 document.getElementById(`status-${i}`).innerText = "PASA A PORTERÍA";
                 document.getElementById(`status-${i}`).style.color = "var(--fc-blue)";
             } else {
+                nuevosActivos[i] = false;
                 document.getElementById(`status-${i}`).innerText = "BLOQUEADO";
                 document.getElementById(`status-${i}`).style.color = "var(--fc-pink)";
             }
@@ -243,7 +273,7 @@
     function showFinalEvent() {
         document.getElementById('modalFinal').style.display = 'flex';
         const ev = Math.floor(Math.random() * 6) + 1;
-        const equipo = getRand(teams);
+        const equipo = getRand(equipos);
         const pos = getRand(posiciones);
         let msg = "";
         switch(ev) {
@@ -278,8 +308,6 @@
         document.getElementById('btnShoot').style.display = 'none';
         document.getElementById('btnNextJornada').style.visibility = 'visible';
     }
-
-    renderMatches();
 </script>
 </body>
 </html>
