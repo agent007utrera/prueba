@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>PC FÚTBOL 2026 - Master Cloud Edition</title>
+    <title>CLASIFICACIÓN</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -183,28 +183,28 @@
     // ==========================================
     const CLOUD_CONFIG = {
         masterKey: '$2a$10$26PEKgZLn/Xrvj382g.aLuqVvown/bA8vqbabwSAPpPYLnPZx/oku', 
-        binId: '6998cf39ae596e708f3b1d90' 
+        binId: '69aca9aeae596e708f6ac02c' 
     };
 
-    const equiposArr = ["E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8"];
+    const equiposArr = ["Valencia", "Atlético", "Barcelona", "R.Betis", "R.Madrid", "Villarreal", "Sevilla", "Athletic"];
     
     // Estructura de calendario basada en tus imágenes
     let leagueData = { 
         matches: [
-            [["E4","E1"], ["E6","E7"], ["E5","E2"], ["E8","E3"]], 
-            [["E6","E5"], ["E7","E3"], ["E1","E8"], ["E2","E4"]], 
-            [["E8","E7"], ["E1","E2"], ["E5","E3"], ["E4","E6"]], 
-            [["E2","E8"], ["E3","E4"], ["E6","E1"], ["E7","E5"]], 
-            [["E1","E3"], ["E4","E7"], ["E2","E6"], ["E5","E8"]], 
-            [["E3","E2"], ["E8","E6"], ["E5","E4"], ["E7","E1"]], 
-            [["E4","E8"], ["E6","E3"], ["E2","E7"], ["E1","E5"]], 
-            [["E1","E4"], ["E7","E6"], ["E2","E5"], ["E3","E8"]], 
-            [["E5","E6"], ["E3","E7"], ["E8","E1"], ["E4","E2"]], 
-            [["E7","E8"], ["E2","E1"], ["E3","E5"], ["E6","E4"]], 
-            [["E8","E2"], ["E4","E3"], ["E1","E6"], ["E5","E7"]], 
-            [["E3","E1"], ["E7","E4"], ["E6","E2"], ["E8","E5"]], 
-            [["E2","E3"], ["E6","E8"], ["E4","E5"], ["E1","E7"]], 
-            [["E8","E4"], ["E3","E6"], ["E7","E2"], ["E5","E1"]]  
+            [["R.Betis","Valencia"], ["Villarreal","Sevilla"], ["R.Madrid","Atlético"], ["Athletic","Barcelona"]], 
+            [["Villarreal","R.Madrid"], ["Sevilla","Barcelona"], ["Valencia","Athletic"], ["Atlético","R.Betis"]], 
+            [["Athletic","Sevilla"], ["Valencia","Atlético"], ["R.Madrid","Barcelona"], ["R.Betis","Villarreal"]], 
+            [["Atlético","Athletic"], ["Barcelona","R.Betis"], ["Villarreal","Valencia"], ["Sevilla","R.Madrid"]], 
+            [["Valencia","Barcelona"], ["R.Betis","Sevilla"], ["Atlético","Villarreal"], ["R.Madrid","Athletic"]], 
+            [["Barcelona","Atlético"], ["Athletic","Villarreal"], ["R.Madrid","R.Betis"], ["Sevilla","Valencia"]], 
+            [["R.Betis","Athletic"], ["Villarreal","Barcelona"], ["Atlético","Sevilla"], ["Valencia","R.Madrid"]], 
+            [["Valencia","R.Betis"], ["Sevilla","Villarreal"], ["Atlético","R.Madrid"], ["Barcelona","Athletic"]], 
+            [["R.Madrid","Villarreal"], ["Barcelona","Sevilla"], ["Athletic","Valencia"], ["R.Betis","Atlético"]], 
+            [["Sevilla","Athletic"], ["Atlético","Valencia"], ["Barcelona","R.Madrid"], ["Villarreal","R.Betis"]], 
+            [["Athletic","Atlético"], ["R.Betis","Barcelona"], ["Valencia","Villarreal"], ["R.Madrid","Sevilla"]], 
+            [["Barcelona","Valencia"], ["Sevilla","R.Betis"], ["Villarreal","Atlético"], ["Athletic","R.Madrid"]], 
+            [["Atlético","Barcelona"], ["Villarreal","Athletic"], ["R.Betis","R.Madrid"], ["Valencia","Sevilla"]], 
+            [["Athletic","R.Betis"], ["Barcelona","Villarreal"], ["Sevilla","Atlético"], ["R.Madrid","Valencia"]]  
         ].map(j => j.map(m => ({ home: m[0], away: m[1], gH: null, gA: null }))),
         teams: {}
     };
@@ -305,13 +305,30 @@
         });
     }
 
-    function renderTable() {
+function renderTable() {
         const tbody = document.getElementById('leagueTable');
         const sorted = Object.keys(leagueData.teams).sort((a,b) => {
             const tA = leagueData.teams[a], tB = leagueData.teams[b];
-            return tB.pts - tA.pts || (tB.gf - tB.gc) - (tA.gf - tA.gc);
+            
+            // 1. Puntos (de mayor a menor)
+            if (tB.pts !== tA.pts) return tB.pts - tA.pts;
+            
+            // 2. Diferencia de goles (DG)
+            const diffA = tA.gf - tA.gc;
+            const diffB = tB.gf - tB.gc;
+            if (diffB !== diffA) return diffB - diffA;
+            
+            // 3. Goles a favor (GF)
+            if (tB.gf !== tA.gf) return tB.gf - tA.gf;
+            
+            // 4. Partidos ganados (PG)
+            return tB.pg - tA.pg;
         });
+        
         tbody.innerHTML = '';
+        // ... (el resto del código de la función se queda igual)
+
+
         sorted.forEach((id, i) => {
             const t = leagueData.teams[id];
             tbody.innerHTML += `<tr class="${i===0?'pos-1':''}">
