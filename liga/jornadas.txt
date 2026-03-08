@@ -194,7 +194,7 @@
         <button class="btn-action" onclick="startGame()">EMPEZAR JORNADA</button>
     </div>
 <!--  ***************************************************************************************** -->
-        <h1 style="color: var(--fc-green); font-family: 'Archivo Black';">COPA DEL REY</h1>
+        <h1 style="color: var(--fc-green); font-family: 'Archivo Black';">AMISTOSOS</h1>
         <div class="setup-grid">
             <input type="text" class="setup-input" id="eq-0" value="???">
             <input type="text" class="setup-input" id="eq-1" value="???">
@@ -205,7 +205,7 @@
             <input type="text" class="setup-input" id="eq-6" value="???">
             <input type="text" class="setup-input" id="eq-7" value="???">
         </div>
-        <button class="btn-action" onclick="startGame()">EMPEZAR JORNADA</button>
+        <button class="btn-action" onclick="startGame()">EMPEZAR PARTIDOS</button>
     </div>
 <!--  ***************************************************************************************** -->
 
