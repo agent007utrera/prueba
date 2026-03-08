@@ -79,7 +79,9 @@
     </style>
 </head>
 <body>
-
+<audio id="sonidoAmbiente" src="ambiente.mp3" loop></audio>
+<audio id="sonidoPitido" src="pitido.mp3"></audio>
+<audio id="sonidoPitidos2" src="pitidos2.mp3"></audio>
     <div id="setupScreen">
         <h1 style="color: var(--fc-green); font-family: 'Archivo Black';">JORNADA 1</h1>
         <div class="setup-grid">
@@ -163,12 +165,16 @@
     ];
 
     function startGame() {
+document.getElementById('sonidoAmbiente').play();
+    // Reproducir el sonido del silbato
+    document.getElementById('sonidoPitido').play();
         for(let i=0; i<8; i++) {
             equipos.push(document.getElementById(`eq-${i}`).value);
         }
         document.getElementById('setupScreen').style.display = 'none';
         renderMatches();
     }
+
 
     function renderMatches() {
         const container = document.getElementById('matchesContainer');
@@ -262,6 +268,10 @@
             document.getElementById('btnAccion').style.display = 'none';
             document.getElementById('btnEventoFinal').style.display = 'block';
             document.getElementById('statDisplay').innerText = "🏁 FIN DEL TIEMPO REGLAMENTARIO";
+// REPRODUCIR SILBATO AL FINAL
+    document.getElementById('sonidoPitidos2').play();
+document.getElementById('sonidoPitido').play();
+
         } else {
             renderMatches();
             document.getElementById('statDisplay').innerText = "🎲 ESPERANDO";
