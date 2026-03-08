@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUPERSOCCER 2026 - CUSTOM LEAGUE</title>
+    <title>JORNADA</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;700;900&display=swap');
 
@@ -81,7 +81,7 @@
 <body>
 
     <div id="setupScreen">
-        <h1 style="color: var(--fc-green); font-family: 'Archivo Black';">CONFIGURAR EQUIPOS</h1>
+        <h1 style="color: var(--fc-green); font-family: 'Archivo Black';">JORNADA 1</h1>
         <div class="setup-grid">
             <input type="text" class="setup-input" id="eq-0" value="REAL BETIS">
             <input type="text" class="setup-input" id="eq-1" value="VALENCIA">
@@ -92,7 +92,7 @@
             <input type="text" class="setup-input" id="eq-6" value="ATHLETIC">
             <input type="text" class="setup-input" id="eq-7" value="BARCELONA">
         </div>
-        <button class="btn-action" onclick="startGame()">EMPEZAR JORNADA 1</button>
+        <button class="btn-action" onclick="startGame()">EMPEZAR JORNADA</button>
     </div>
 
     <div class="container">
@@ -124,8 +124,8 @@
                 <button class="btn-action" id="btnShoot" onclick="shootPenalty()" style="background: var(--fc-pink); color: white;">LANZAR PENALTI</button>
             </div>
             <div style="margin-top: 30px; display: flex; gap: 10px; justify-content: center;">
-                <button class="btn-action" id="btnNextJornada" onclick="location.reload()">SIGUIENTE JORNADA</button>
-                <button class="btn-action" onclick="window.location.href='menu.html'" style="background: var(--fc-blue);">MENÚ</button>
+                <button class="btn-action" id="btnNextJornada" onclick="location.reload()">REPETIR JORNADA</button>
+                <button class="btn-action" onclick="window.location.href='../calendario.html'" style="background: var(--fc-blue);">CALENDARIO</button>
             </div>
         </div>
     </div>
