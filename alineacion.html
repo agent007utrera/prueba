@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC FÚTBOL 2026 - ALINEACIONES</title>
+    <title>ALINEACIONES</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;700;900&display=swap');
 
         :root {
             --pc-gold: #ffd700;
             --pc-blue: #004a99;
-            --dark-metal: #1a1a1a;
             --pitch-green: #1e4d20;
+            --seat-color: #333;
         }
 
         * { box-sizing: border-box; }
@@ -24,40 +24,43 @@
             display: flex;
             height: 100vh;
             width: 100vw;
-            overflow-x: auto; 
-            overflow-y: hidden;
+            overflow: auto; 
             text-transform: uppercase;
         }
 
+        /* BARRA LATERAL */
         #sidebar {
-            width: 240px;
-            min-width: 240px;
-            background: linear-gradient(180deg, #050505 0%, var(--dark-metal) 100%);
+            width: 230px;
+            min-width: 230px;
+            background: #111;
             border-right: 2px solid var(--pc-blue);
-            padding: 20px;
-            overflow-y: auto;
+            padding: 15px;
             height: 100vh;
-            z-index: 20;
+            overflow-y: auto;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        h2 { color: var(--pc-gold); font-size: 1rem; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .league-title { color: var(--pc-blue); font-weight: 900; margin-top: 15px; font-size: 0.75rem; letter-spacing: 1px; }
-        
+        .league-title {
+            color: var(--pc-gold);
+            font-size: 0.7rem;
+            font-weight: 900;
+            margin-top: 20px;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 3px;
+        }
+
         .team-link {
             display: block;
-            padding: 8px 10px;
-            color: #888;
+            padding: 6px 10px;
+            color: #aaa;
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
-            transition: 0.2s;
         }
-
-        .team-link:hover {
-            color: var(--pc-gold);
-            background: rgba(255,255,255,0.05);
-            padding-left: 15px;
-        }
+        .team-link:hover { color: white; background: rgba(255,255,255,0.05); }
 
         #main-view {
             flex-grow: 1;
@@ -65,166 +68,171 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle, #111 0%, #000 100%);
-            padding: 20px;
-            min-width: 850px; /* Límite mínimo para que no se rompa la interfaz */
+            padding: 60px;
+            min-width: 1000px;
         }
 
-        #team-name-bg {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: rgba(255,215,0,0.07);
-            margin-bottom: 10px;
+        /* GRADAS DE ESPECTADORES VISIBLES */
+        #stadium-wrap {
+            position: relative;
+            padding: 60px; /* Espacio para las gradas */
+            background: 
+                repeating-linear-gradient(45deg, #222 0px, #222 2px, #1a1a1a 2px, #1a1a1a 4px), /* Textura de asientos */
+                radial-gradient(circle, #444 0%, #111 100%);
+            border: 15px solid #222;
+            border-radius: 30px;
+            box-shadow: 0 0 100px rgba(0,0,0,1), inset 0 0 50px #000;
         }
 
-        /* CAMPO MÁS COMPACTO Y PROPORCIONAL */
+        /* EL CAMPO */
         #soccer-pitch {
             position: relative;
-            width: 800px; /* Reducido de 950px a 800px */
-            height: 480px; 
+            width: 700px;  
+            height: 450px; 
             background: var(--pitch-green);
             border: 4px solid white;
-            border-radius: 8px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
             background-image: 
                 linear-gradient(90deg, transparent 49.8%, white 50%, white 50.2%, transparent 50.4%),
-                repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,0.03) 80px, rgba(255,255,255,0.03) 160px);
-            overflow: visible;
+                repeating-linear-gradient(90deg, transparent, transparent 70px, rgba(255,255,255,0.03) 70px, rgba(255,255,255,0.03) 140px);
         }
 
-        .area {
+        /* BANDERINES DE CÓRNER */
+        .corner-flag {
             position: absolute;
-            top: 25%;
-            height: 50%;
-            width: 100px;
-            border: 2px solid white;
-            z-index: 1;
+            width: 12px;
+            height: 12px;
+            background: #ff0;
+            border: 1px solid #000;
+            z-index: 5;
         }
-        .area-izq { left: 0; border-left: none; }
-        .area-der { right: 0; border-right: none; }
+        .cf-tl { top: -6px; left: -6px; }
+        .cf-tr { top: -6px; right: -6px; }
+        .cf-bl { bottom: -6px; left: -6px; }
+        .cf-br { bottom: -6px; right: -6px; }
 
+        /* LÍNEAS Y PUNTOS */
+        .penalty-area { position: absolute; top: 50%; transform: translateY(-50%); width: 120px; height: 240px; border: 3px solid white; z-index: 1; }
+        .area-left { left: 0; border-left: none; }
+        .area-right { right: 0; border-right: none; }
+        .goal-area { position: absolute; top: 50%; transform: translateY(-50%); width: 45px; height: 100px; border: 3px solid white; z-index: 1; }
+        .goal-left-box { left: 0; border-left: none; }
+        .goal-right-box { right: 0; border-right: none; }
+        .penalty-spot { position: absolute; top: 50%; width: 8px; height: 8px; background: white; border-radius: 50%; transform: translate(-50%, -50%); z-index: 1; }
+        .spot-left { left: 90px; }
+        .spot-right { right: 82px; }
+        .circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100px; height: 100px; border: 3px solid white; border-radius: 50%; z-index: 1; }
+        .goal { position: absolute; top: 50%; transform: translateY(-50%); width: 15px; height: 100px; border: 3px solid white; background: rgba(255,255,255,0.1); z-index: 1; }
+        .goal-left { left: -15px; border-right: none; }
+        .goal-right { right: -15px; border-left: none; }
+
+        /* JUGADORES */
         .player-card {
             position: absolute;
-            width: 90px;
-            height: 125px;
+            width: 80px;
+            height: 115px;
             background: #222;
             border: 2px solid var(--pc-gold);
-            border-radius: 5px;
-            transform: translate(-50%, -50%);
-            z-index: 10;
+            border-radius: 4px;
+            z-index: 50;
             cursor: zoom-in;
             box-shadow: 4px 8px 15px rgba(0,0,0,0.5);
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.2s;
             object-fit: cover;
         }
 
-        .player-card:hover {
-            transform: translate(-50%, -55%) scale(1.1);
-            border-color: white;
-            z-index: 15;
-        }
+        .pos-por { left: 15%; top: 50%; transform: translate(-50%, -50%); }
+        .pos-def { left: 30%; top: 50%; transform: translate(-50%, -50%); }
+        .pos-del { left: 75%; top: 50%; transform: translate(-50%, -50%); }
 
-        /* POSICIONAMIENTO EN PORCENTAJES PARA QUE SE AJUSTEN AL MINIMIZAR */
-        .pos-por { left: 12%; top: 50%; }
-        .pos-def { left: 35%; top: 50%; }
-        .pos-medi { left: 58%; top: 28%; } 
-        .pos-medd { left: 58%; top: 72%; } 
-        .pos-del { left: 85%; top: 50%; }
-
-        #bench-container {
-            margin-top: 20px;
-            width: 800px;
-        }
-
-        .bench-label {
-            font-size: 0.65rem;
-            color: var(--pc-gold);
-            margin-bottom: 8px;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-
-        #bench-row {
+        #midfield-zone {
+            position: absolute;
+            left: 52%;
+            top: 50%;
+            height: 240px; 
+            width: 100px;
             display: flex;
-            justify-content: center;
-            gap: 12px;
-            background: rgba(255,255,255,0.03);
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #222;
-        }
-
-        .bench-card {
-            width: 80px;
-            height: 110px;
-            border: 1px solid #444;
-            border-radius: 4px;
-            cursor: zoom-in;
-            transition: 0.3s;
-            object-fit: cover;
-        }
-
-        .bench-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--pc-gold);
-        }
-
-        #modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            cursor: zoom-out;
+            transform: translate(-50%, -50%);
+            z-index: 60;
         }
+        
+        #midfield-zone .player-card { position: relative; left: auto; top: auto; transform: none; }
 
-        #modal img {
-            max-height: 85vh;
-            border: 4px solid var(--pc-gold);
-            border-radius: 12px;
-        }
+        #bench-container { margin-top: 30px; width: 700px; }
+        #bench-row { display: flex; justify-content: center; gap: 8px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 5px; }
+        .bench-card { width: 70px; height: 100px; border: 1px solid #333; object-fit: cover; }
+
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
+        #modal img { max-height: 85vh; border: 3px solid var(--pc-gold); }
     </style>
 </head>
 <body>
 
     <div id="sidebar">
-        <h2>PC FÚTBOL 2026</h2>
+        <h2 style="color: var(--pc-gold); font-size: 0.85rem; margin-bottom: 10px;">PC FÚTBOL 2026</h2>
+        
         <div class="league-title">PREMIER LEAGUE</div>
         <a class="team-link" onclick="update('arsenal')">Arsenal</a>
         <a class="team-link" onclick="update('chelsea')">Chelsea</a>
         <a class="team-link" onclick="update('liverpool')">Liverpool</a>
         <a class="team-link" onclick="update('manchester_city')">Manchester City</a>
+
         <div class="league-title">BUNDESLIGA</div>
-        <a class="team-link" onclick="update('bayern')">Bayern Munich</a>
-        <a class="team-link" onclick="update('borussia')">Borussia Dortmund</a>
+        <a class="team-link" onclick="update('bayern')">Bayern</a>
+        <a class="team-link" onclick="update('borussia')">Borussia</a>
+
         <div class="league-title">LIGUE 1</div>
-        <a class="team-link" onclick="update('psg')">PSG</a>
         <a class="team-link" onclick="update('monaco')">Monaco</a>
+        <a class="team-link" onclick="update('psg')">PSG</a>
+
         <div class="league-title">SERIE A</div>
-        <a class="team-link" onclick="update('inter')">Inter de Milán</a>
+        <a class="team-link" onclick="update('inter')">Inter</a>
         <a class="team-link" onclick="update('juventus')">Juventus</a>
+
+        <div class="league-title">VARIOS EUROPEOS</div>
+        <a class="team-link" onclick="update('benfica')">Benfica</a>
+        <a class="team-link" onclick="update('galatasaray')">Galatasaray</a>
+
         <div class="league-title">LIGA ARGENTINA</div>
         <a class="team-link" onclick="update('boca')">Boca Juniors</a>
         <a class="team-link" onclick="update('river')">River Plate</a>
     </div>
 
     <div id="main-view">
-        <div id="team-name-bg">PSG</div>
+        <div style="font-size: 1.2rem; margin-bottom: 20px; color: #555; letter-spacing: 3px;" id="team-name">PSG</div>
         
-        <div id="soccer-pitch">
-            <div class="area area-izq"></div>
-            <div class="area area-der"></div>
-            <img id="por" class="player-card pos-por" onclick="openZoom(this.src)">
-            <img id="def" class="player-card pos-def" onclick="openZoom(this.src)">
-            <img id="medi" class="player-card pos-medi" onclick="openZoom(this.src)">
-            <img id="medd" class="player-card pos-medd" onclick="openZoom(this.src)">
-            <img id="del" class="player-card pos-del" onclick="openZoom(this.src)">
+        <div id="stadium-wrap">
+            <div id="soccer-pitch">
+                <div class="corner-flag cf-tl"></div>
+                <div class="corner-flag cf-tr"></div>
+                <div class="corner-flag cf-bl"></div>
+                <div class="corner-flag cf-br"></div>
+
+                <div class="goal goal-left"></div>
+                <div class="goal goal-right"></div>
+                <div class="penalty-area area-left"></div>
+                <div class="penalty-area area-right"></div>
+                <div class="goal-area goal-left-box"></div>
+                <div class="goal-area goal-right-box"></div>
+                <div class="penalty-spot spot-left"></div>
+                <div class="penalty-spot spot-right"></div>
+                <div class="circle"></div>
+
+                <img id="por" class="player-card pos-por" onclick="openZoom(this.src)">
+                <img id="def" class="player-card pos-def" onclick="openZoom(this.src)">
+                
+                <div id="midfield-zone">
+                    <img id="medi" class="player-card" onclick="openZoom(this.src)">
+                    <img id="medd" class="player-card" onclick="openZoom(this.src)">
+                </div>
+                
+                <img id="del" class="player-card pos-del" onclick="openZoom(this.src)">
+            </div>
         </div>
 
         <div id="bench-container">
-            <div class="bench-label">SUPLENTES 1-5</div>
             <div id="bench-row">
                 <img id="s1" class="bench-card" onclick="openZoom(this.src)">
                 <img id="s2" class="bench-card" onclick="openZoom(this.src)">
@@ -241,7 +249,7 @@
 
     <script>
         function update(team) {
-            document.getElementById('team-name-bg').innerText = team.toUpperCase();
+            document.getElementById('team-name').innerText = team.replace('_', ' ').toUpperCase();
             document.getElementById('por').src = `images/${team}_por.jpg`;
             document.getElementById('def').src = `images/${team}_def.jpg`;
             document.getElementById('medi').src = `images/${team}_medi.jpg`;
@@ -252,8 +260,7 @@
             }
         }
         function openZoom(src) {
-            const img = document.getElementById('imgZoom');
-            img.src = src;
+            document.getElementById('imgZoom').src = src;
             document.getElementById('modal').style.display = 'flex';
         }
         window.onload = () => update('psg');
