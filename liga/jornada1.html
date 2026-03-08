@@ -76,6 +76,15 @@
             background: var(--dark-bg); z-index: 100; flex-direction: column; align-items: center; justify-content: center; text-align: center;
         }
         .event-card { background: rgba(255,255,255,0.05); border: 2px solid var(--fc-green); padding: 30px; border-radius: 20px; max-width: 500px; }
+
+.pos-portero { color: #ffff00 !important; }
+.pos-defensa { color: #00e5ff !important; }
+.pos-medio { color: #ccff00 !important; }
+.pos-delantero { color: #ff0000 !important; }
+.loc-color { color: #ffffff !important; }
+.vis-color { color: #aaaaaa !important; }
+.pos-vs { color: #ff007a !important; }
+
     </style>
 </head>
 <body>
@@ -126,8 +135,11 @@
                 <button class="btn-action" id="btnShoot" onclick="shootPenalty()" style="background: var(--fc-pink); color: white;">LANZAR PENALTI</button>
             </div>
             <div style="margin-top: 30px; display: flex; gap: 10px; justify-content: center;">
-                <button class="btn-action" id="btnNextJornada" onclick="location.reload()">REPETIR JORNADA</button>
-                <button class="btn-action" onclick="window.location.href='../calendario.html'" style="background: var(--fc-blue);">CALENDARIO</button>
+
+<!--  ********************************************BOTÓN REPETIR JORNADA************************************************************* -->
+<!--                <button class="btn-action" id="btnNextJornada" onclick="location.reload()">REPETIR JORNADA</button> -->
+		<button class="btn-action" id="btnNextJornada" onclick="window.location.href='jornada2.html'">SIGUIENTE JORNADA</button>
+                <button class="btn-action" onclick="window.location.href='../calendario.html'" style="background: var(--fc-blue);">📅 CALENDARIO</button>
             </div>
         </div>
     </div>
@@ -142,26 +154,26 @@
     let marcadores = [0,0,0,0,0,0,0,0];
 
     const sequence = [
-        { name: "DEFENSA LOCAL vs DEFENSA VISITANTE", atk: "L" },
-        { name: "DEFENSA LOCAL vs PORTERO VISITANTE", atk: "L", isGoalPhase: true },
-        { name: "DEFENSA VISITANTE vs DEFENSA LOCAL", atk: "V" },
-        { name: "DEFENSA VISITANTE vs PORTERO LOCAL", atk: "V", isGoalPhase: true },
-        { name: "MEDIO IZQUIERDO LOCAL vs DEFENSA VISITANTE", atk: "L" },
-        { name: "MEDIO IZQUIERDO LOCAL vs PORTERO VISITANTE", atk: "L", isGoalPhase: true },
-        { name: "MEDIO IZQUIERDO VISITANTE vs DEFENSA LOCAL", atk: "V" },
-        { name: "MEDIO IZQUIERDO VISITANTE vs PORTERO LOCAL", atk: "V", isGoalPhase: true },
-        { name: "MEDIO DERECHO LOCAL vs DEFENSA VISITANTE", atk: "L" },
-        { name: "MEDIO DERECHO LOCAL vs PORTERO VISITANTE", atk: "L", isGoalPhase: true },
-        { name: "MEDIO DERECHO VISITANTE vs DEFENSA LOCAL", atk: "V" },
-        { name: "MEDIO DERECHO VISITANTE vs PORTERO LOCAL", atk: "V", isGoalPhase: true },
-        { name: "DELANTERO LOCAL vs DEFENSA VISITANTE", atk: "L" },
-        { name: "DELANTERO LOCAL vs PORTERO VISITANTE", atk: "L", isGoalPhase: true },
-        { name: "DELANTERO VISITANTE vs DEFENSA LOCAL", atk: "V" },
-        { name: "DELANTERO VISITANTE vs PORTERO LOCAL", atk: "V", isGoalPhase: true },
-        { name: "DELANTERO LOCAL vs DEFENSA VISITANTE", atk: "L" },
-        { name: "DELANTERO LOCAL vs PORTERO VISITANTE", atk: "L", isGoalPhase: true },
-        { name: "DELANTERO VISITANTE vs DEFENSA LOCAL", atk: "V" },
-        { name: "DELANTERO VISITANTE vs PORTERO LOCAL", atk: "V", isGoalPhase: true }
+        { name: "⚽ DEFENSA LOCAL vs DEFENSA VISITANTE", atk: "L" },
+        { name: "⚽ DEFENSA LOCAL vs PORTERO VISITANTE", atk: "L", isGoalPhase: true },
+        { name: "DEFENSA LOCAL vs DEFENSA VISITANTE ⚽", atk: "V" },
+        { name: "PORTERO LOCAL vs DEFENSA VISITANTE ⚽", atk: "V", isGoalPhase: true },
+        { name: "⚽ MEDIO IZQUIERDO LOCAL vs DEFENSA VISITANTE", atk: "L" },
+        { name: "⚽ MEDIO IZQUIERDO LOCAL vs PORTERO VISITANTE", atk: "L", isGoalPhase: true },
+        { name: "DEFENSA LOCAL vs MEDIO IZQUIERDO VISITANTE ⚽", atk: "V" },
+        { name: "PORTERO LOCAL vs MEDIO IZQUIERDO VISITANTE ⚽", atk: "V", isGoalPhase: true },
+        { name: "⚽ MEDIO DERECHO LOCAL vs DEFENSA VISITANTE", atk: "L" },
+        { name: "⚽ MEDIO DERECHO LOCAL vs PORTERO VISITANTE", atk: "L", isGoalPhase: true },
+        { name: "DEFENSA LOCAL vs MEDIO DERECHO VISITANTE ⚽", atk: "V" },
+        { name: "PORTERO LOCAL vs MEDIO DERECHO VISITANTE ⚽", atk: "V", isGoalPhase: true },
+        { name: "⚽ DELANTERO LOCAL vs DEFENSA VISITANTE", atk: "L" },
+        { name: "⚽ DELANTERO LOCAL vs PORTERO VISITANTE", atk: "L", isGoalPhase: true },
+        { name: "DEFENSA LOCAL vs DELANTERO VISITANTE ⚽", atk: "V" },
+        { name: "PORTERO LOCAL vs DELANTERO VISITANTE ⚽", atk: "V", isGoalPhase: true },
+        { name: "⚽ DELANTERO LOCAL vs DEFENSA VISITANTE", atk: "L" },
+        { name: "⚽ DELANTERO LOCAL vs PORTERO VISITANTE", atk: "L", isGoalPhase: true },
+        { name: "DEFENSA LOCAL vs DELANTERO VISITANTE ⚽", atk: "V" },
+        { name: "PORTERO LOCAL vs DELANTERO VISITANTE ⚽", atk: "V", isGoalPhase: true }
     ];
 
     function startGame() {
@@ -198,7 +210,19 @@ document.getElementById('sonidoAmbiente').play();
                     <div id="status-${i}" style="font-weight:700; font-size:0.7rem; text-align:center">---</div>
                 </div>`;
         }
-        document.getElementById('duelTitle').innerText = f.name;
+
+let textoFinal = f.name
+.replace(/PORTERO/g, '<span class="pos-portero">PORTERO</span>')
+.replace(/DEFENSA/g, '<span class="pos-defensa">DEFENSA</span>')
+.replace(/MEDIO IZQUIERDO/g, '<span class="pos-medio">MEDIO IZQUIERDO</span>')
+.replace(/MEDIO DERECHO/g, '<span class="pos-medio">MEDIO DERECHO</span>')
+.replace(/DELANTERO/g, '<span class="pos-delantero">DELANTERO</span>')
+.replace(/LOCAL/g, '<span class="loc-color">LOCAL</span>')
+.replace(/VISITANTE/g, '<span class="vis-color">VISITANTE</span>')
+.replace(/vs/g, '<span class="pos-vs">vs</span>');
+
+document.getElementById('duelTitle').innerHTML = textoFinal;
+
         document.getElementById('phaseNum').innerText = `FASE ${faseIdx + 1} / ${sequence.length}`;
     }
 
@@ -301,7 +325,7 @@ document.getElementById('sonidoPitido').play();
             case 5: msg = `🏃 EL <strong>${pos}</strong> DEL <strong>${equipo}</strong> HA PAGADO SU CLÁUSULA Y SE HA MARCHADO A OTRO EQUIPO.`; break;
             case 6:
                 const esMulta = Math.random() > 0.5;
-                msg = esMulta ? `🏁 EL <strong>${equipo}</strong> HA SIDO MULTADO CON <strong>10 MILLONES</strong>.` : `🎫 EL <strong>${equipo}</strong> HA INGRESADO <strong>10 MILLONES</strong> POR PUBLICIDAD.`;
+                msg = esMulta ? `🏁 EL <strong>${equipo}</strong> HA SIDO MULTADO CON <strong>10 MILLONES</strong>.` : `💵 EL <strong>${equipo}</strong> HA INGRESADO <strong>10 MILLONES</strong> POR PUBLICIDAD.`;
                 break;
         }
         document.getElementById('evIcon').innerText = "🎲 " + ev;
