@@ -283,8 +283,39 @@ document.getElementById('duelTitle').innerHTML = textoFinal;
         avanzarFase();
     }
 
-    function avanzarFase() {
+function avanzarFase() {
         faseIdx++;
+
+        // --- LÓGICA DE EVENTOS ALEATORIOS ---
+        // 0.05 significa 5% de probabilidad de que salte un evento en cada fase
+        if (faseIdx < sequence.length && Math.random() < 0.05) {
+            
+            // Seleccionamos un equipo y una posición al azar
+            const equipoAfectado = equipos[Math.floor(Math.random() * equipos.length)];
+            const posAfectada = posiciones[Math.floor(Math.random() * posiciones.length)];
+            
+            // Decidimos el tipo de evento con probabilidades (0.70 = 70% lesión)
+            const azarEvento = Math.random(); 
+            let mensaje = "";
+
+            // Hacer sonar el silbato al inicio del evento
+            document.getElementById('sonidoPitido').play();
+
+            if (azarEvento < 0.70) { 
+                // CASO LESIÓN (70% de probabilidad)
+                const semanas = Math.floor(Math.random() * 5) + 1;
+                mensaje = "🚑 ¡ATENCIÓN!\n\nEl " + posAfectada + " del " + equipoAfectado + " se ha lesionado.\nEstará fuera " + semanas + " semanas.";
+            } else {
+                // CASO EXPULSIÓN (30% de probabilidad restante)
+                mensaje = "🔴 ¡TARJETA ROJA!\n\nEl " + posAfectada + " del " + equipoAfectado + " ha sido expulsado.";
+            }
+            
+            // Mostrar el aviso en pantalla
+            alert(mensaje);
+        }
+        // ------------------------------------
+
+        // Lógica para finalizar el partido o continuar a la siguiente fase
         if(faseIdx >= sequence.length) {
             document.getElementById('duelTitle').innerText = "PARTIDOS FINALIZADOS";
             document.getElementById('phaseNum').innerText = "FIN";
@@ -292,11 +323,13 @@ document.getElementById('duelTitle').innerHTML = textoFinal;
             document.getElementById('btnAccion').style.display = 'none';
             document.getElementById('btnEventoFinal').style.display = 'block';
             document.getElementById('statDisplay').innerText = "🏁 FIN DEL TIEMPO REGLAMENTARIO";
-// REPRODUCIR SILBATO AL FINAL
-    document.getElementById('sonidoPitidos2').play();
-document.getElementById('sonidoPitido').play();
+            
+            // Sonidos de final de jornada
+            document.getElementById('sonidoPitidos2').play();
+            document.getElementById('sonidoPitido').play();
 
         } else {
+            // Si el partido sigue, refrescar la interfaz
             renderMatches();
             document.getElementById('statDisplay').innerText = "🎲 ESPERANDO";
         }
